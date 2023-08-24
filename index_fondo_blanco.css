@@ -1,0 +1,60 @@
+body{
+    background-color: white;
+}
+
+h1{
+    color: white;
+	font-size: 150px;
+	font-family: 'arial', monospace;
+
+	
+    border-radius: 00%;
+    width: 650px;
+    height: 150px;
+	padding: 20px;
+    border: 10px solid #000000;
+    color: #000000;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+      
+}
+
+div{
+    text-align: center;
+}
+
+button{
+    height: 5.5em;
+    width: 8.8em;
+    border: none;
+    color: white;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+.start-btn{
+    background-color: green;
+}
+
+.pause-btn{
+    background-color: grey;
+}
+
+.stop-btn{
+    background-color: red;
+}
+.fondo-blanco{
+	background-color: orange;
+}
+.fondo-negro{
+	background-color: orange;
+}
+.fondo-muni{
+	background-color: orange;
+}
