@@ -100,11 +100,20 @@
     <div class="dropup">
       <button class="drop-btn">Menu</button>
       <div class="dropup-content">
-        <label for="colorpicker">Color:</label>
+        <strong>Colores</strong><br />
+        <label for="page-colorpicker">Fondo:</label>
         <input
           type="color"
-          id="colorpicker"
+          id="page-colorpicker"
           oninput="updatePageColor(this.value)"
+          value="#ffffff"
+        />
+        <label for="text-colorpicker">Texto:</label>
+        <input
+          type="color"
+          id="text-colorpicker"
+          oninput="updateFontColor(this.value)"
+          value="#000000"
         />
       </div>
     </div>
@@ -132,17 +141,33 @@
       }
     }
 
-    function updatePageColor(rgbValue) {
-      document.body.style.backgroundColor = rgbValue;
-      // document
-      //   .getElementById("container")
-      //   .setAttribute("style", `background-color: ${rgbValue}`);
+    const watchStyles = {
+      backgroundColor: "#ffffff",
+      fontColor: "#000000",
+    };
+
+    function updateStyles() {
+      let backgroundColor = watchStyles.backgroundColor;
+      let fontColor = watchStyles.fontColor;
       document
         .getElementById("watch")
-        .setAttribute("style", `background-color: ${rgbValue}`);
+        .setAttribute(
+          "style",
+          `background-color: ${backgroundColor}; color: ${fontColor}; border: 10px solid`
+        );
     }
 
-    // TODO: hay un bug de presionar multiples veces
+    function updateFontColor(rgbValue) {
+      watchStyles.fontColor = rgbValue;
+      updateStyles();
+    }
+
+    function updatePageColor(rgbValue) {
+      document.body.style.backgroundColor = rgbValue;
+      watchStyles.backgroundColor = rgbValue;
+      updateStyles();
+    }
+
     function start_timer() {
       updateButtons("start-btn", false);
       watch();
