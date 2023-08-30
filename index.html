@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cronometro</title>
     <style>
-      /* Common styles */
       div {
         text-align: center;
       }
@@ -38,22 +37,13 @@
         background-color: red;
       }
 
-      #btn-fondo-blanco,
-      #btn-fondo-negro,
-      #btn-fondo-muni {
-        background-color: orange;
-      }
-
-      /* Fondo Blanco Styles*/
-      body.blanco {
+      body {
         background-color: white;
       }
 
-      h1.blanco {
-        color: white;
+      h1 {
         font-size: 150px;
         font-family: "arial", monospace;
-
         border-radius: 00%;
         width: 650px;
         height: 150px;
@@ -66,135 +56,130 @@
         align-items: center;
         flex-direction: column;
       }
-
-      /* Fondo Negro Styles*/
-      body.negro {
-        background-color: black;
+      .dropup {
+        position: fixed;
+        bottom: -4px;
+        right: 80px;
       }
-
-      h1.negro {
+      .drop-btn {
+        background-color: #31b0d5;
         color: white;
-        font-size: 150px;
-        font-family: "arial", monospace;
-
-        border-radius: 00%;
-        width: 650px;
-        height: 150px;
-        padding: 20px;
-        border: 10px solid #ffffff;
-        color: #ffffff;
-        margin: 50px auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
+        height: 2.8em;
+        opacity: 0.3;
+        padding: 10px 20px;
+        border-radius: 4px;
+        border-color: #46b8da;
       }
-
-      /* Fondo Muni Styles */
-      body.muni {
-        background-color: mediumslateblue;
+      .drop-btn:hover {
+        opacity: 1;
       }
-
-      h1.muni {
-        color: white;
-        font-size: 150px;
-        font-family: "arial", monospace;
-
-        border-radius: 00%;
-        width: 650px;
-        height: 150px;
-        padding: 20px;
-        border: 10px solid #ffffff;
-        color: #ffffff;
-        margin: 50px auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
+      .dropup-content {
+        display: none;
+        position: absolute;
+        bottom: 35px;
+        background-color: #f1f1f1;
+        width: 100%;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+      .dropup:hover .dropup-content {
+        display: block;
+      }
+      .dropup:hover .drop-btn {
+        opacity: 1;
       }
     </style>
   </head>
-  <body id="fondo" class="blanco">
-    <div>
-      <h1 id="watch" class="blanco">00:00:00</h1>
+  <body>
+    <div id="container">
+      <h1 id="watch">00:00:00</h1>
       <button id="start-btn" onclick="start_timer()">Start</button>
       <button id="pause-btn" onclick="pause_timer()" disabled>Pause</button>
       <button id="stop-btn" onclick="stop_timer()" disabled>Stop</button>
-      <button id="btn-fondo-muni" onclick="fondo_muni()">Fondo Muni</button>
-      <button id="btn-fondo-negro" onclick="fondo_negro()">Fondo Negro</button>
-      <button id="btn-fondo-blanco" onclick="fondo_blanco()">
-        Fondo Blanco
-      </button>
     </div>
-    <script>
-      let sec = 0;
-      let min = 0;
-      let hr = 0;
-
-      let interval;
-
-      function twoDigits(digit) {
-        if (digit < 10) {
-          return "0" + digit;
-        } else {
-          return digit;
-        }
-      }
-
-      // TODO: hay un bug de presionar multiples veces
-      function start_timer() {
-        document.getElementById("start-btn").setAttribute("disabled", "");
-        watch();
-        interval = setInterval(watch, 1000); //en milisegundos
-        document.getElementById("pause-btn").removeAttribute("disabled");
-        document.getElementById("stop-btn").removeAttribute("disabled");
-      }
-
-      function pause_timer() {
-        clearInterval(interval);
-        document.getElementById("start-btn").removeAttribute("disabled");
-        document.getElementById("pause-btn").setAttribute("disabled", "");
-      }
-
-      function stop_timer() {
-        clearInterval(interval);
-        sec = 0;
-        min = 0;
-        //window.alert("You've stopped at: "+document.getElementById('watch').innerText)
-        document.getElementById("watch").innerText = "00:00:00";
-        document.getElementById("start-btn").removeAttribute("disabled");
-        document.getElementById("pause-btn").setAttribute("disabled", "");
-        document.getElementById("stop-btn").setAttribute("disabled", "");
-      }
-
-      function watch() {
-        sec++;
-        if (sec == 60) {
-          min++;
-          sec = 0;
-          if (min == 60) {
-            min = 0;
-            hr++;
-          }
-        }
-        document.getElementById("watch").innerText =
-          twoDigits(hr) + ":" + twoDigits(min) + ":" + twoDigits(sec);
-      }
-
-      function fondo_muni() {
-        document.getElementById("fondo").setAttribute("class", "muni");
-        document.getElementById("watch").setAttribute("class", "muni");
-      }
-
-      function fondo_blanco() {
-        document.getElementById("fondo").setAttribute("class", "blanco");
-        document.getElementById("watch").setAttribute("class", "blanco");
-      }
-
-      function fondo_negro() {
-        document.getElementById("fondo").setAttribute("class", "negro");
-        document.getElementById("watch").setAttribute("class", "negro");
-      }
-    </script>
+    <div class="dropup">
+      <button class="drop-btn">Menu</button>
+      <div class="dropup-content">
+        <label for="colorpicker">Color:</label>
+        <input
+          type="color"
+          id="colorpicker"
+          oninput="updatePageColor(this.value)"
+        />
+      </div>
+    </div>
   </body>
+  <script>
+    let sec = 0;
+    let min = 0;
+    let hr = 0;
+
+    let interval;
+
+    function twoDigits(digit) {
+      if (digit < 10) {
+        return "0" + digit;
+      } else {
+        return digit;
+      }
+    }
+
+    function updateButtons(btnId, isEnabled) {
+      if (isEnabled) {
+        document.getElementById(btnId).removeAttribute("disabled");
+      } else {
+        document.getElementById(btnId).setAttribute("disabled", "");
+      }
+    }
+
+    function updatePageColor(rgbValue) {
+      document.body.style.backgroundColor = rgbValue;
+      // document
+      //   .getElementById("container")
+      //   .setAttribute("style", `background-color: ${rgbValue}`);
+      document
+        .getElementById("watch")
+        .setAttribute("style", `background-color: ${rgbValue}`);
+    }
+
+    // TODO: hay un bug de presionar multiples veces
+    function start_timer() {
+      updateButtons("start-btn", false);
+      watch();
+      interval = setInterval(watch, 1000); //en milisegundos
+      updateButtons("pause-btn", true);
+      updateButtons("stop-btn", true);
+    }
+
+    function pause_timer() {
+      clearInterval(interval);
+      updateButtons("start-btn", true);
+      updateButtons("pause-btn", false);
+    }
+
+    function stop_timer() {
+      clearInterval(interval);
+      sec = 0;
+      min = 0;
+      hr = 0;
+      document.getElementById("watch").innerText = "00:00:00";
+      updateButtons("start-btn", true);
+      updateButtons("pause-btn", false);
+      updateButtons("stop-btn", false);
+    }
+
+    function watch() {
+      sec++;
+      if (sec == 60) {
+        min++;
+        sec = 0;
+        if (min == 60) {
+          min = 0;
+          hr++;
+        }
+      }
+      document.getElementById("watch").innerText =
+        twoDigits(hr) + ":" + twoDigits(min) + ":" + twoDigits(sec);
+    }
+  </script>
 </html>
